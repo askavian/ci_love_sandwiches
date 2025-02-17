@@ -2,19 +2,19 @@
 # You can delete these comments, but do not change the name of this file
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 
-import gspread # imports entire google spreadsheet
-from google.oauth2.service_account import Credentials # imports only credentials functions 
+import gspread                                                  #  imports entire google spreadsheet
+from google.oauth2.service_account import Credentials           #  imports only credentials functions 
 
-SCOPE = [
+SCOPE = [                                                       #  is selected in the API Library on Google API & Services page
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
     ]
 
-CREDS = Credentials.from_service_account_file('creds.json')
-SCOPED_CREDS = CREDS.with_scopes(SCOPE)
-GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open('ci_love_sandwiches')
+CREDS = Credentials.from_service_account_file('creds.json')     #  links to .json file where API Acces credentials is stored
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)                         #  calls the defined scope -> see above
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)                #  checks the credentials against Google API AIM Service
+SHEET = GSPREAD_CLIENT.open('ci_love_sandwiches')               #  loads the spreadsheet if API AIM validation is successfull
 
 #sales = SHEET.worksheet('sales')                               #  TEST: if API is working
 #data = sales.get_all_values()                                  #  TEST: if API is working
@@ -41,7 +41,9 @@ def validate_data(values):                                      #  validates dat
     Raises ValueError if strings cannot be converted into int,
     or if there aren't exactly 6 values.
     """
+#    print(values)                                              # TEST: for raw values input
     try:
+        [int(value) for value in values]                        #  converts all values in list to integer 
         if len(values) != 6:                                    #  if the values (list) IS NOT exactly 6 numbers     
             raise ValueError(                                   #  raises ValueError and shows lenght given            
                 f"Exactly 6 values required, you provided {len(values)}"
