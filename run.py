@@ -63,4 +63,20 @@ def validate_data(values):                                          #  validates
 
     return True                                                     #  returns True if validation is corret
 
+
+def update_sales_worksheet(data):                                   #  pushes sales data to google sheet after validation
+    """
+    Update sales worksheet, add new row with the list data provided
+    """
+    print("Updating sales worksheet...\n")
+    sales_worksheet = SHEET.worksheet("sales")                      #  targets "sales" page in google sheet
+    sales_worksheet.append_row(data)                                #  adds data as a new row 
+    print("Sales worksheet updated successfully.\n")
+
+
 data = get_sales_data()                                             #  stores sales data after validation in new var "data"
+#print(data)                                                        #  TEST: prints validated and final sales data input
+sales_data = [int(num) for num in data]                             #  converts and stores all list entries to integer
+#print(sales_data)                                                  #  TEST: prints validated and final sales data input
+
+update_sales_worksheet(sales_data)                                  #  calls function for pushing data to sheet
