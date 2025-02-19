@@ -4,6 +4,7 @@
 
 import gspread                                                      #  imports entire google spreadsheet
 from google.oauth2.service_account import Credentials               #  imports only credentials functions 
+from pprint import pprint                                           #  Displays pprint statement for better examining lists
 
 SCOPE = [                                                           #  is selected in the API Library on Google API & Services page
     "https://www.googleapis.com/auth/spreadsheets",
@@ -74,9 +75,35 @@ def update_sales_worksheet(data):                                   #  pushes sa
     print("Sales worksheet updated successfully.\n")
 
 
-data = get_sales_data()                                             #  stores sales data after validation in new var "data"
-#print(data)                                                        #  TEST: prints validated and final sales data input
-sales_data = [int(num) for num in data]                             #  converts and stores all list entries to integer
-#print(sales_data)                                                  #  TEST: prints validated and final sales data input
+def caluclate_surplus_data(sales_row):                              #  Substracts sales figures from stock
+    """
+    Compare sales with stock and calculate the surplus for each type.
 
-update_sales_worksheet(sales_data)                                  #  calls function for pushing data to sheet
+    The surplus is defined as the sales figure subtracted from the stock:
+    - Positive surplus indicates waste.
+    - Negative surplus indicates extra made when stock was sold out.
+    """
+
+    print("Calculating surplus data...\n")
+
+    stock = SHEET.worksheet("stock").get_all_values()
+#    pprint(stock)                                                  #  TEST: pprint for accurate list print
+    stock_row = stock[-1]                                           #  List Index [-1] only gets last row from list / len method also possible
+#    print(stock_row)                                               #  TEST: print for showing if [-1] works correctly
+
+
+def main():                                                         #  Common practise to call every function step by step in one place
+    """
+    Run all programm functions
+    """
+    data = get_sales_data()                                         #  stores sales data after validation in new var "data"
+#    print(data)                                                    #  TEST: prints validated and final sales data input
+    sales_data = [int(num) for num in data]                         #  converts and stores all list entries to integer
+#    print(sales_data)                                              #  TEST: prints validated and final sales data input
+    update_sales_worksheet(sales_data)                              #  calls function for pushing data to sheet
+    caluclate_surplus_data(sales_data)
+
+
+print("Welcome to Love Sandwiches Data Automation \n")              #  First thing to be displayed before the function main()
+main()                                                              #  Function always needs to be called BELOW from it's position
+
