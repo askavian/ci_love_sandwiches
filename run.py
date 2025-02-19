@@ -52,8 +52,6 @@ def validate_data(values):                                          #  validates
 #    print(values)                                                  #  TEST: for raw values input
     try:
         [int(value) for value in values]                            #  converts all values in list to integer
-
-
         if len(values) != 6:                                        #  if the values (list) IS NOT exactly 6 numbers     
             raise ValueError(                                       #  raises ValueError and shows lenght given            
                 f"Exactly 6 values required, you provided {len(values)}"
@@ -89,7 +87,16 @@ def caluclate_surplus_data(sales_row):                              #  Substract
     stock = SHEET.worksheet("stock").get_all_values()
 #    pprint(stock)                                                  #  TEST: pprint for accurate list print
     stock_row = stock[-1]                                           #  List Index [-1] only gets last row from list / len method also possible
-#    print(stock_row)                                               #  TEST: print for showing if [-1] works correctly
+#    print(f"stock row: {stock_row}")                               #  TEST: print for showing if [-1] works correctly
+#    print(f"sales row: {sales_row}")                               #  TEST: print for showing sales data is still correct
+
+    surplus_data = []                                               #  VAR for surplus data
+    for stock, sales in zip(stock_row, sales_row):                  #  for loop with ZIP Method for calculating multiple lists 
+        surplus = int(stock) - sales                                #  Converts to INT and is calculating Surplus
+        surplus_data.append(surplus)                                #  Adds data as new row ???
+#    print(surplus_data)                                            #  TEST: to see if surplus calculation is correct
+
+    return surplus_data                                             #  Returns surplus_data and stores it in surplus_data above
 
 
 def main():                                                         #  Common practise to call every function step by step in one place
@@ -101,7 +108,8 @@ def main():                                                         #  Common pr
     sales_data = [int(num) for num in data]                         #  converts and stores all list entries to integer
 #    print(sales_data)                                              #  TEST: prints validated and final sales data input
     update_sales_worksheet(sales_data)                              #  calls function for pushing data to sheet
-    caluclate_surplus_data(sales_data)
+    new_surplus_data = caluclate_surplus_data(sales_data)           #  VAR and call for function
+    print(new_surplus_data)
 
 
 print("Welcome to Love Sandwiches Data Automation \n")              #  First thing to be displayed before the function main()
