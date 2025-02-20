@@ -73,6 +73,16 @@ def update_sales_worksheet(data):                                   #  pushes sa
     print("Sales worksheet updated successfully.\n")
 
 
+def update_surplus_worksheet(new_surplus_data):                     #  pushes surplus data to google sheet after validation
+    """
+    Update surplus worksheet, add new row with the list data provided
+    """
+    print("Updating surplus worksheet...\n")
+    surplus_worksheet = SHEET.worksheet("surplus")                  #  targets "surplus" page in google sheet
+    surplus_worksheet.append_row(new_surplus_data)                  #  adds data as a new row 
+    print("Surplus worksheet updated successfully.\n")
+
+
 def caluclate_surplus_data(sales_row):                              #  Substracts sales figures from stock
     """
     Compare sales with stock and calculate the surplus for each type.
@@ -109,7 +119,8 @@ def main():                                                         #  Common pr
 #    print(sales_data)                                              #  TEST: prints validated and final sales data input
     update_sales_worksheet(sales_data)                              #  calls function for pushing data to sheet
     new_surplus_data = caluclate_surplus_data(sales_data)           #  VAR and call for function
-    print(new_surplus_data)
+#    print(new_surplus_data)                                        #  TEST: Prints Surplus data after calculatiing before commiting
+    update_surplus_worksheet(new_surplus_data)                      #  calls update surplus function with calculated data from above
 
 
 print("Welcome to Love Sandwiches Data Automation \n")              #  First thing to be displayed before the function main()
