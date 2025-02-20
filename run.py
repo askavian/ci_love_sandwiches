@@ -112,6 +112,22 @@ def caluclate_surplus_data(sales_row):                              #  Substract
     return surplus_data                                             #  Returns surplus_data and stores it in surplus_data above
 
 
+def get_last_5_entries_sales():
+    """
+    Collects collumns of data from sales worksheet, collecting
+    the last 5 entries for each sandwich and returns the data
+    as a list of lists
+    """
+    sales = SHEET.worksheet("sales")
+    columns = []                                                    #  creates new list that contains all product's last five entries
+    for ind in range(1, 7):                                         #  1 is Start from and 7 is where the range ends (cuts out 0)
+#        print(ind)                                                 #  TEST: functionallity of for loop
+        column = sales.col_values(ind)                              #  Applies ind numbers to columns 
+        columns.append(column[-5:])                                 #  list slicing for only the last 5 items
+#    pprint(columns)                                                #  TEST: pprints all columns imported / ":"" for slicing multiple values
+    return columns                                                  #  Returns calculation als variable columns
+
+
 def main():                                                         #  Common practise to call every function step by step in one place
     """
     Run all programm functions
@@ -129,5 +145,5 @@ def main():                                                         #  Common pr
 
 
 print("Welcome to Love Sandwiches Data Automation \n")              #  First thing to be displayed before the function main()
-main()                                                              #  Function always needs to be called BELOW from it's position
-
+#main()                                                              #  Function always needs to be called BELOW from it's position
+sales_columns = get_last_5_entries_sales()                                         
