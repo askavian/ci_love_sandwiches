@@ -29,17 +29,13 @@ def get_sales_data():
         print("Please enter the sales data from the last market.")
         print("Data should be six numbers, seperated by commas.")
         print("Example: 10,20,30,40,50,60\n")                       #  "\n" = New Line Character
-
         data_str = input("Enter your data here: ")                  #  input MUST BE exactly 6 Int
 #        print(f"The data provided is {data_str}")                  #  TEST: "f" string for interpolation of values 
-
         sales_data = data_str.split(",")                            #  REMOVES string-"," and ADDS list-"," creates "data_str" list
         validate_data(sales_data)                                   #  calls "validate_data" function from inside "get_sales_data" function
-
         if validate_data(sales_data): 
             print("Data is valid!")                                 #  TEST: if while loop is exited
             break                                                   #  breaks the while loop if False
-
     return sales_data                                               #  returns proccessesed sales_data
 
 
@@ -59,28 +55,39 @@ def validate_data(values):                                          #  validates
     except ValueError as e:                                         #  "e" is Python shorthand for ERROR    
         print(f"Invalid data: {e}, please try again.\n")            #  combines "raise ValueError" into statement wie "e" keyword                 
         return False                                                #  returns False if ValueError was raised
-
     return True                                                     #  returns True if validation is corret
 
 
-def update_sales_worksheet(data):                                   #  pushes sales data to google sheet after validation
+#def update_sales_worksheet(data):                                  #  pushes sales data to google sheet after validation
+#    """
+#    Update sales worksheet, add new row with the list data provided
+#    """
+#    print("Updating sales worksheet...\n")
+#    sales_worksheet = SHEET.worksheet("sales")                     #  targets "sales" page in google sheet
+#    sales_worksheet.append_row(data)                               #  adds data as a new row 
+#    print("Sales worksheet updated successfully.\n")
+
+
+#def update_surplus_worksheet(new_surplus_data):                    #  pushes surplus data to google sheet after validation
+#    """
+#    Update surplus worksheet, add new row with the list data provided
+#    """
+#    print("Updating surplus worksheet...\n")
+#    worksheet_to_update = SHEET.worksheet(worksheet)               #  targets "surplus" page in google sheet
+#    worksheet_to_update.append_row(data)                           #  adds data as a new row 
+#    print("Surplus worksheet updated successfully.\n")
+
+
+def update_worksheet(data, worksheet):                              #  GENERAL FUNCTION AFTER REFACTORING TO MERGE BOTH UPDATE FUNCTIONS TO ONE
     """
-    Update sales worksheet, add new row with the list data provided
+    GENERAL FUNCTION
+    Recieves a list of integers to be inserted into a worksheet.
+    Update the relevant worksheet with the data provided.
     """
-    print("Updating sales worksheet...\n")
-    sales_worksheet = SHEET.worksheet("sales")                      #  targets "sales" page in google sheet
+    print(f"Updating {worksheet} worksheet...\n")                   #  Uses "f" argument to insert what is been updated
+    sales_worksheet = SHEET.worksheet(worksheet)                    #  targets any worksheet page that is givin
     sales_worksheet.append_row(data)                                #  adds data as a new row 
-    print("Sales worksheet updated successfully.\n")
-
-
-def update_surplus_worksheet(new_surplus_data):                     #  pushes surplus data to google sheet after validation
-    """
-    Update surplus worksheet, add new row with the list data provided
-    """
-    print("Updating surplus worksheet...\n")
-    surplus_worksheet = SHEET.worksheet("surplus")                  #  targets "surplus" page in google sheet
-    surplus_worksheet.append_row(new_surplus_data)                  #  adds data as a new row 
-    print("Surplus worksheet updated successfully.\n")
+    print(f"{worksheet} worksheet updated successfully.\n")
 
 
 def caluclate_surplus_data(sales_row):                              #  Substracts sales figures from stock
@@ -91,21 +98,17 @@ def caluclate_surplus_data(sales_row):                              #  Substract
     - Positive surplus indicates waste.
     - Negative surplus indicates extra made when stock was sold out.
     """
-
     print("Calculating surplus data...\n")
-
     stock = SHEET.worksheet("stock").get_all_values()
 #    pprint(stock)                                                  #  TEST: pprint for accurate list print
     stock_row = stock[-1]                                           #  List Index [-1] only gets last row from list / len method also possible
 #    print(f"stock row: {stock_row}")                               #  TEST: print for showing if [-1] works correctly
 #    print(f"sales row: {sales_row}")                               #  TEST: print for showing sales data is still correct
-
     surplus_data = []                                               #  VAR for surplus data
     for stock, sales in zip(stock_row, sales_row):                  #  for loop with ZIP Method for calculating multiple lists 
         surplus = int(stock) - sales                                #  Converts to INT and is calculating Surplus
         surplus_data.append(surplus)                                #  Adds data as new row ???
 #    print(surplus_data)                                            #  TEST: to see if surplus calculation is correct
-
     return surplus_data                                             #  Returns surplus_data and stores it in surplus_data above
 
 
@@ -117,10 +120,12 @@ def main():                                                         #  Common pr
 #    print(data)                                                    #  TEST: prints validated and final sales data input
     sales_data = [int(num) for num in data]                         #  converts and stores all list entries to integer
 #    print(sales_data)                                              #  TEST: prints validated and final sales data input
-    update_sales_worksheet(sales_data)                              #  calls function for pushing data to sheet
+#    update_sales_worksheet(sales_data)                             #  calls function for pushing data to sheet SALES ONLY FUNCTION
+    update_worksheet(sales_data, "sales")                           #  calls function for pushing data to sheet GENERAL FUNCTION
     new_surplus_data = caluclate_surplus_data(sales_data)           #  VAR and call for function
 #    print(new_surplus_data)                                        #  TEST: Prints Surplus data after calculatiing before commiting
-    update_surplus_worksheet(new_surplus_data)                      #  calls update surplus function with calculated data from above
+#    update_surplus_worksheet(new_surplus_data)                     #  calls update surplus function with calculated data from above SURPLUF FUNCTION LNY
+    update_worksheet(new_surplus_data, "surplus")                   #  calls update surplus function with calculated data from above GENERAL FUNCTION
 
 
 print("Welcome to Love Sandwiches Data Automation \n")              #  First thing to be displayed before the function main()
