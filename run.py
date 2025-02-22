@@ -128,6 +128,22 @@ def get_last_5_entries_sales():
     return columns                                                  #  Returns calculation als variable columns
 
 
+def calculate_stock_data(data):       
+    """
+    Calculate the average stock for each item type, adding 10%
+    """
+    print("Calculating stock data...\n")
+    new_stock_data = []                                             #  list is filled by this calculation
+    for column in data:
+        int_column = [int(num) for num in column]                   #  converts all entries to INT
+        average = sum(int_column) / len(int_column)                 #  average (sum of a column) / length
+#        average = sum(int_column) / 5                              #  ALTERNATIVE method because length is always 5 here
+        stock_num = average * 1.1                                   #  adds 10% to average
+        new_stock_data.append(round(stock_num))                     #  appends the list with new line and values / rounds it to whole numbers
+#    print(new_stock_data)                                          #  TEST: prints rounded 110% calculated data
+    return new_stock_data                                           #  Returns calculation als variable columns
+
+
 def main():                                                         #  Common practise to call every function step by step in one place
     """
     Run all programm functions
@@ -142,8 +158,11 @@ def main():                                                         #  Common pr
 #    print(new_surplus_data)                                        #  TEST: Prints Surplus data after calculatiing before commiting
 #    update_surplus_worksheet(new_surplus_data)                     #  calls update surplus function with calculated data from above SURPLUF FUNCTION LNY
     update_worksheet(new_surplus_data, "surplus")                   #  calls update surplus function with calculated data from above GENERAL FUNCTION
-
+    sales_columns = get_last_5_entries_sales()                      #  calls function for last 5 sales data entries (sorts it)
+    stock_data = calculate_stock_data(sales_columns)                #  calls for function to take last 5 sales data (average + 10%)
+#    print(stock_data)                                              #  TEST: prints 110% stock average for forecasting
+    update_worksheet(stock_data, "stock")                           #  calls UPDATE stock_data function from above GENERAL FUNCTION
 
 print("Welcome to Love Sandwiches Data Automation \n")              #  First thing to be displayed before the function main()
-#main()                                                              #  Function always needs to be called BELOW from it's position
-sales_columns = get_last_5_entries_sales()                                         
+main()                                                              #  Function always needs to be called BELOW from it's position
+                              
