@@ -29,7 +29,7 @@ def get_sales_data():
         print("Please enter the sales data from the last market.")
         print("Data should be six numbers, seperated by commas.")
         print("Example: 10,20,30,40,50,60\n")                       #  "\n" = New Line Character
-        data_str = input("Enter your data here: ")                  #  input MUST BE exactly 6 Int
+        data_str = input("Enter your data here: \n")                #  \n IS MUST HAVE  formock terminal (heroku) IF NOT IT WON'T SHOW
 #        print(f"The data provided is {data_str}")                  #  TEST: "f" string for interpolation of values 
         sales_data = data_str.split(",")                            #  REMOVES string-"," and ADDS list-"," creates "data_str" list
         validate_data(sales_data)                                   #  calls "validate_data" function from inside "get_sales_data" function
@@ -162,7 +162,17 @@ def main():                                                         #  Common pr
     stock_data = calculate_stock_data(sales_columns)                #  calls for function to take last 5 sales data (average + 10%)
 #    print(stock_data)                                              #  TEST: prints 110% stock average for forecasting
     update_worksheet(stock_data, "stock")                           #  calls UPDATE stock_data function from above GENERAL FUNCTION
+    return stock_data                                               #  stock_data as product of main to further process
+
 
 print("Welcome to Love Sandwiches Data Automation \n")              #  First thing to be displayed before the function main()
 main()                                                              #  Function always needs to be called BELOW from it's position
-                              
+
+
+#def get_stock_values(data):
+#    """
+#    Assigns Product Names to Stock Values
+#    """
+#    stock_values = []
+#    from colum in 
+# continue: https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+LS101+2/courseware/293ee9d8ff3542d3b877137ed81b9a5b/76ddca4f534e45939ef4855d06f590cb/?child=first
