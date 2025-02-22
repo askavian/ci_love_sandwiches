@@ -4,7 +4,7 @@
 
 import gspread                                                      #  imports entire google spreadsheet
 from google.oauth2.service_account import Credentials               #  imports only credentials functions 
-from pprint import pprint                                           #  Displays pprint statement for better examining lists
+#from pprint import pprint                                          #  Displays pprint statement for better examining lists
 
 SCOPE = [                                                           #  is selected in the API Library on Google API & Services page
     "https://www.googleapis.com/auth/spreadsheets",
